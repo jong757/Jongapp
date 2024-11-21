@@ -1,0 +1,9 @@
+{
+    "welcome_message": "欢迎, {username}!",
+    "error_not_found": "未找到请求的资源。",
+    "login_success": "登录成功。",
+    "logout_success": "您已成功登出。",
+    "profile_updated": "您的个人资料已更新。",
+    "password_incorrect": "密码不正确，请重试。",
+    "account_locked": "您的账户已被锁定，请联系管理员。"
+}

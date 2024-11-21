@@ -1,0 +1,25 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>	
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET ?>" />
+    <title>系统异常</title>
+    <style>
+	  *{padding:0;margin:0;}
+	  body{background:#fff;font-family:Tahoma,Arial,sans-serif;color:#333;font-size:16px;}
+	  #msg{text-align:center;width:750px;margin:100px auto 0;overflow:hidden;word-break:keep-all;word-wrap:break-word;}
+	  #title{font-size:50px;}
+	  #body{font-size:30px;}
+	  code{font-family: consolas, monaco, courier new, courier, monospace;font-size: 12px;background-color: #f9f9f9;border: 1px solid #d0d0d0;color: #002166;display: block;margin: 14px 0 14px 0;padding: 12px 10px 12px 10px;}
+	  #footer{font-size:14px;text-align:center;color:#999;}
+	  #footer a{color:#000;text-decoration:none;}
+	</style>
+</head>
+<body>
+    <div id="msg">        	
+     <div id="title">系统异常</div>
+     <div id="body"><?php echo htmlspecialchars($msg);?></div>
+     <?php if($detail){ echo "<code>$detail</code>";} ?>
+	 <div id="footer">请联系技术人员处理 </div> 
+    </div>
+</body>
+</html>
