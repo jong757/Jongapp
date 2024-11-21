@@ -85,7 +85,7 @@ class Auth {
 
     public function getQqQrCode() {
         $url = 'https://ssl.ptlogin2.qq.com/ptqrshow?appid=549000912&e=2&l=M&s=4&d=72&v=4&t=0.5409099' . time() . '&daid=5';
-        $arr = $this->makeRequest($url, true);
+        $arr = $this->curlRequest($url, true);
         preg_match('/qrsig=(.*?);/', $arr['header'], $match);
         $qrsig = $match[1] ?? '';
         if ($qrsig) {
@@ -100,13 +100,13 @@ class Auth {
             return ['code' => 0, 'msg' => 'qrsig不能为空', 'data' => []];
         }
         $url = 'https://ssl.ptlogin2.qq.com/ptqrlogin?u1=https%3A%2F%2Fqzs.qq.com%2Fqzone%2Fv5%2Floginsucc.html%3Fpara%3Dizone&ptqrtoken=' . $this->getQrtoken($qrsig) . '&login_sig=&ptredirect=0&h=1&t=1&g=1&from_ui=1&ptlang=2052&action=0-0-' . time() . '0000&js_ver=10194&js_type=1&pt_uistyle=40&aid=549000912&daid=5&';
-        $ret = $this->makeRequest($url, false, 'qrsig=' . $qrsig . '; ');
+        $ret = $this->curlRequest($url, false, 'qrsig=' . $qrsig . '; ');
         if (preg_match("/ptuiCB\('(.*?)'\)/", $ret, $arr)) {
             $r = explode("','", str_replace("', '", "','", $arr[1]));
             if ($r[0] == 0) {
                 preg_match('/uin=(\d+)&/', $ret, $uin);
                 $openid = $uin[1];
-                $data = $this->makeRequest($r[2]);
+                $data = $this->curlRequest($r[2]);
                 preg_match("/p_skey=(.*?);/", $data, $matchs);
                 $pskey = $matchs[1] ?? null;
 
@@ -141,7 +141,7 @@ class Auth {
         return $hash & 2147483647;
     }
 
-    private function makeRequest($url, $split = false, $cookie = '', $post = 0, $referer = 0, $header = 0, $ua = 0, $nobody = 0) {
+    private function curlRequest($url, $split = false, $cookie = '', $post = 0, $referer = 0, $header = 0, $ua = 0, $nobody = 0) {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
