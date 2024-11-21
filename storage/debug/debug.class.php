@@ -59,40 +59,38 @@ class debug {
 			}
 		}
 	}
+    /**
+     * 错误 error_handler
+     */
+    public static function error_handler($errno, $errstr, $errfile, $errline) {
+        if ($errno == E_NOTICE || $errno == E_USER_NOTICE) {
+            $color = "#151515";
+        } else {
+            $color = "red";
+        }
+
+        $mess = '<span style="color:' . $color . '">';
+        $mess .= '<b>' . (self::$msg[$errno] ?? '未知错误') . '</b> [文件 ' . $errfile . ' 中,第 ' . $errline . ' 行] ：';
+        $mess .= $errstr;
+        $mess .= '</span>';
+
+        self::addmsg($mess, 2);
+    }
 	/**
-	 * 错误 error_handler
-	 */
-	public static function error_handler($errno, $errstr, $errfile, $errline) {
-		if($errno==8) return '';
-		if(!isset(self::$msg[$errno])) 
-						$errno='Unkown';
-		if($errno==E_NOTICE || $errno==E_USER_NOTICE)
-						$color="#151515"; else
-						$color="red";
-		$mess = '<span style="color:'.$color.'">';
-		$mess .= '<b>'.self::$msg[$errno].'</b> [文件 '.$errfile.' 中,第 '.$errline.' 行] ：';
-		$mess .= $errstr;
-		$mess .= '</span>';
-		self::addmsg($mess,2);
-	}
-	/**
-	 * 捕获异常
-	 * @param	object	$exception
-	 */
-	public static function exception($exception) {
-		if(defined('APP_DEBUG')&&APP_DEBUG) {
-			$mess = '<span style="color:red">';
-			$mess .= '<b>系统异常</b> [文件 '.$exception->getFile().' 中,第 '.$exception->getLine().' 行] ：';
-			$mess .= $exception->getMessage();
-			$mess .= '</span>';
-			self::addmsg($mess,2);
-			self::error($exception->getMessage(),$exception->getFile().' on line '.$exception->getLine());
-			self::message();
-			exit;
-		} else {
-			self::error($exception->getMessage(), '');
-		}
-	}
+     * 捕获异常
+     * @param	object	$exception
+     */
+    public static function exception($exception) {
+        $mess = '<span style="color:red">';
+        $mess .= '<b>系统异常</b> [文件 ' . $exception->getFile() . ' 中,第 ' . $exception->getLine() . ' 行] ：';
+        $mess .= $exception->getMessage();
+        $mess .= '</span>';
+
+        self::addmsg($mess, 2);
+        self::error($exception->getMessage(), $exception->getFile() . ' on line ' . $exception->getLine());
+        self::message();
+        exit;
+    }
 	/**
 	 * 添加调试消息
 	 * @param	string	$msg	调试消息字符串
