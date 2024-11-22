@@ -77,13 +77,22 @@ if(	sys::loadEnv(CONFIG_PATH,'system','gzip') && function_exists('ob_gzhandler')
 function my_error_handler($errno, $errstr, $errfile, $errline) {
 	if($errno==8) return '';
 	$errfile = str_replace(PATH,'',$errfile);
+	
 	if(defined('APP_DEBUG')&&APP_DEBUG){ 
 		debug::addmsg($errno.' | '.str_pad($errstr,30).' | '.$errfile.' | '.$errline,2); 
 	}
+	
 	if(sys::loadEnv(LOGS_PATH,'system','errorlog')) {
-		error_log('<?php exit;?>'.date('m-d H:i:s',time()).' | '.$errno.' | '.str_pad($errstr,30).' | '.$errfile.' | '.$errline."\r\n", 3, LOGS_PATH.'error_log.php');
-	} else {
-		$str = '<div style="font-size:12px;text-align:left; border-bottom:1px solid #9cc9e0; border-right:1px solid #9cc9e0;padding:1px 4px;color:#000000;font-family:Arial, Helvetica,sans-serif;"><span>errorno:' . $errno . ',str:' . $errstr . ',file:<font color="blue">' . $errfile . '</font>,line' . $errline .'</span></div>';
-		echo $str;
-	}
+		$Excep = sys::loadSysClass('ExceptionHandler');
+		$Excep->setGlobalHandler(LOGS_PATH.'error_log.php', $errstr, 'ERROR', [
+			'errno' => $errno, 
+			'errstr' => $errstr,
+			'errfile' => $errfile,
+			'errline' => $errline,
+			]
+		);
+		// $Excep->handleException();
+		/* error_log('<?php exit;?>'.date('m-d H:i:s',time()).' | '.$errno.' | '.str_pad($errstr,30).' | '.$errfile.' | '.$errline."\r\n", 3, LOGS_PATH.'error_log.php'); */
+	} 
+	
 }

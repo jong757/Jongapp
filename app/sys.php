@@ -10,13 +10,15 @@
 //当前核心目录路径
 define('PATH', dirname(__FILE__).DS);
 
+
 //加载常量库
 sys::loadFunc('constant');
 
 //加载公共方法库
 sys::loadFunc('global');
 
-class sys {
+
+class sys{
     /**
     * 创建应用程序实例(默认加载)
     */

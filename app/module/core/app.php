@@ -35,7 +35,7 @@ class app {
 	
 	
 		//查询
-		print_r(joins('database', 'default', [], function($db) {
+		print_r(joinData('mysqli', 'default', [], function($db) {
 			// 执行查询
 			// $WHERE = "parentid=977";
 			$result = $db->select('admin','*');
@@ -49,6 +49,7 @@ class app {
 			}
 		}));
 
+		// print_r(joinData('mysqli', 'default', []));
 		
 		
 		// // 数据库配置

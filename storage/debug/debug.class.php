@@ -12,6 +12,9 @@ register_shutdown_function(array('debug','fatalerror'));
 }
 set_error_handler(array('debug','error_handler'));
 set_exception_handler(array('debug', 'exception'));
+//加载通用错误处理
+// sys::loadSysClass('ExceptionHandler');
+
 class debug {
 	public static $info = array();
 	public static $sqls = array();
@@ -59,6 +62,8 @@ class debug {
 			}
 		}
 	}
+	
+
     /**
      * 错误 error_handler
      */
@@ -170,7 +175,7 @@ class debug {
 	private static  function getBaseInfo() {
 		// 系统默认显示信息
 		$baseinfo_arr = array(
-				1=> ' 服务器信息: '.$_SERVER['SERVER_SOFTWARE'].L('failure'),
+				1=> ' 服务器信息: '.$_SERVER['SERVER_SOFTWARE'],
 				2=> ' 请求信息: '.date('Y-m-d H:i:s',$_SERVER['REQUEST_TIME']).' '.$_SERVER['SERVER_PROTOCOL'].' '.$_SERVER['REQUEST_METHOD'].' : '.$_SERVER["REQUEST_URI"],
 				3=> ' 内存开销: '.number_format((memory_get_usage())/1024,2).' kb',  
 				4=> ' 文件加载: '.count(self::$files).' , SQL: '.count(self::$sqls).' , '.' 错误: '.count(self::$errors).' , '.' 调试: '.count(self::$trace).' ', 

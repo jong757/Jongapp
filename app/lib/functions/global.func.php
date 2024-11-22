@@ -182,27 +182,31 @@ function get_url() {
 
 
 /**
- * 工厂连接通用处理
+ * 数据库连接
  *
- * @param string $factory 类型(database,cache)
+ * @param string $type 类型(mysqli,access,sqlite)
  * @param string $stash 配置名称
  * @param array $array 请求数组
  * @param callable|null $preprocess 可选的预处理函数
  * @return string 语言字符
  */
-function joins(string $factory = 'database', $stash = 'default', array $array = [], callable $preprocess = null) {
+
+function joinData(string $type = 'mysqli', $stash = 'default', array $array = [], callable $preprocess = null) {
     // 加载配置文件
-    $config = sys::loadEnv(CONFIG_PATH, $factory);
-    // 获取工厂实例并设置配置
-    $factory_class = sys::loadSysClass('factory');
-    $factory_instance = $factory_class::get_instance($config);
-    // 获取数据库实例
-    $db = $factory_instance->get_resource($stash, $factory);
+    $config = sys::loadEnv(CONFIG_PATH, 'database');
+	
+	//初始化类
+	sys::loadSysClass('db_Archive', '', false);
+	$cinfig_arra = $config[$type][$stash];
+	$cinfig_arra['dbType'] = $type;
+	// print_r($cinfig_arra);
+	$object = new db_Archive($cinfig_arra); // 传递配置参数
+	print_r($object);
     // 如果有预处理函数，则执行预处理
     if ($preprocess) {
-		$preprocess($db, $array);
+		$preprocess($object, $array);
     }
     // 关闭连接
-    $db->close();
+    $object->close();
     return true; // 返回一个标志，表示操作成功
 }

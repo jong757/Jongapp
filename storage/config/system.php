@@ -2,7 +2,7 @@
 return [
 	//网站配置
 	'charset' => 'utf-8', //网站字符集
-	'errorlog' => 1, //1、保存错误日志到 cache/error_log.php | 0、在页面直接显示
+	'errorlog' => 1, //1、保存错误日志到 error_log.php | 0、在页面直接显示
 	'lang' => 'zh-cn',  //网站语言包
 	'gzip' => 1, //是否Gzip压缩后输出
 	'timezone' => 'Etc/GMT-8', //网站时区（只对php 5.1以上版本有效），Etc/GMT-8 实际表示的是 GMT+8
